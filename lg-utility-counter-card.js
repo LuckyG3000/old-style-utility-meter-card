@@ -8,15 +8,10 @@ class LGUtilityCounterCard extends HTMLElement {
     _isAttached = false;
 
     // lifecycle
-    constructor() {
-        super();
-        //console.log("LGUtilityCounterCard.constructor()")
-        this.doStyle();
-        this.doCard();
-    }
+    
 
     setConfig(config) {
-        //console.log("LGUtilityCounterCard.setConfig()")
+        console.log("LGUtilityCounterCard.setConfig()")
         this._config = config;
         if (!this._isAttached) {
             this.doAttach();
@@ -24,8 +19,15 @@ class LGUtilityCounterCard extends HTMLElement {
             this.doListen();
             this._isAttached = true;
         }
-        this.doCheckConfig();_confi
+        this.doCheckConfig();
         this.doUpdateConfig();
+    }
+
+	constructor() {
+        super();
+        console.log("LGUtilityCounterCard.constructor()")
+        this.doStyle();
+        this.doCard();
     }
 
     set hass(hass) {
