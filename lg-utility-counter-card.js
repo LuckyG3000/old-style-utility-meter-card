@@ -11,13 +11,14 @@ class LGUtilityCounterCard extends HTMLElement {
     constructor() {
         super();
         //console.log("LGUtilityCounterCard.constructor()")
+		this._config = config;
         this.doStyle();
         this.doCard();
     }
 
     setConfig(config) {
         //console.log("LGUtilityCounterCard.setConfig()")
-        this._config = config;
+        //this._config = config;
         if (!this._isAttached) {
             this.doAttach();
             this.doQueryElements();
