@@ -207,7 +207,8 @@ class LGUtilityCounterCard extends HTMLElement {
 				<div class="lg-utility-counter-main-div">
 					<div class="lg-utility-counter-red-bg">
 					</div><div class="lg-utility-counter-grey-bg">kWh</div>`;
-		for (var d = 0; d < 8; d++) {
+		var total_digits = this._config.digits_number + this._config.decimals_number;
+		for (var d = 0; d < total_digits; d++) {
 			html_content += `<span class="lg-utility-counter-digit-window">
 						<span class="lg-utility-counter-digit-text" id="lguc-digit-` + d + `">0</span>
 					</span>`;
