@@ -269,6 +269,19 @@ class LGUtilityCounterCard extends HTMLElement {
 
 			var total_digits_left = this._config.digits_number;
 			var total_digits_right = this._config.decimals_number;
+
+			if (total_digits_left == 0) {	//auto
+				total_digits_left = String(parseInt(cntr_val)).length;
+				if (total_digits_left > 10) {total_digits_left = 10;}
+			}
+
+			if (total_digits_right == 0) {	//auto
+				const defaultPrecision = this.getState().attributes.default_precision;
+				console.log(defaultPrecision);
+				//total_digits_right = String(parseInt(cntr_val)).length;
+				if (total_digits_right > 5) {total_digits_right = 5;}
+			}
+			
 			var total_digits = total_digits_left + total_digits_right;
 		
 			var cntr_val = this.getState().state;
@@ -336,7 +349,7 @@ class LGUtilityCounterCard extends HTMLElement {
 			//const unitOfMeasurement = this.getState().attributes.unit_of_measurement;
 			unitOfMeasurement = "kWh";
 			return unitOfMeasurement;
-		}*/
+		}
         return undefined;
 		
 		  
