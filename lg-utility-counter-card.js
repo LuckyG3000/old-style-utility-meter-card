@@ -6,6 +6,10 @@ function loadCSS(url) {
   document.head.appendChild(link);
 }
 
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 //loadCSS("https://fonts.googleapis.com/css?family=Gloria+Hallelujah");
 loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap");
 
@@ -268,7 +272,9 @@ class LGUtilityCounterCard extends HTMLElement {
             //this._elements.value.textContent = this.getState().state;
 
 			var cntr_val = this.getState().state;
-			
+			if (isNumeric(this._config.offset)) {
+				cntr_val += this._config.offset;
+			}
 			var digits_left = this._config.digits_number;
 			var digits_right = this._config.decimals_number;
 
@@ -278,15 +284,12 @@ class LGUtilityCounterCard extends HTMLElement {
 			}
 
 			if (digits_right == 0) {	//auto
-/*				const defaultPrecision = this.getState().attributes.precision;
-				console.log(defaultPrecision);
-
-				var attrs = this.getState().attributes;
-				for (var ix = 0; ix < attrs.length; ix++) {
-					console.log(ix + ": " + attrs[ix]);
+				var tmp_str = String(cntr_val - parseInt(cntr_val)).slice(2, 2 + 5);
+				
+				while (tmp_str.slice(-1) == "0") {
+					tmp_str = tmp_str.slice(0, -1);
 				}
-*/
-				digits_right = String(cntr_val - parseInt(cntr_val)).slice(2, 2 + 5).length;
+				digits_right = tmp_str.length;
 				if (digits_right > 5) {digits_right = 5;}
 			}
 			
@@ -311,7 +314,11 @@ class LGUtilityCounterCard extends HTMLElement {
 			this._elements.redbg.style.left = ((30 * digits_left) + 5) + "px";
 			this._elements.redbg.style.width = (30 * digits_right) + "px";
 			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right)) + "px";
-			const unitOfMeasurement = this.getState().attributes.unit_of_measurement;
+			
+			var unitOfMeasurement = this.getState().attributes.unit_of_measurement;
+			if (String(this._config.unit).length > 0) {		//if unit is configured in Card's config, use it instead of entity's unit_of_measurement
+				unitOfMeasurement = this._config.unit;
+			}
 			this._elements.greybg.innerHTML = unitOfMeasurement;
 			
             this._elements.error.classList.add("lguc-error--hidden");
@@ -337,6 +344,7 @@ class LGUtilityCounterCard extends HTMLElement {
         { name: "name", selector: { text: {} } },
 		{ name: "digits_number", selector: { number: { min: 0, max: 10, step: 1, mode: "slider" } } },
 		{ name: "decimals_number", selector: { number: { min: 0, max: 5, step: 1, mode: "slider" } } },
+		{ name: "offset", selector: { number: { step: any, mode: "box" } } },
         {
             name: "icon",
             selector: {
@@ -348,7 +356,6 @@ class LGUtilityCounterCard extends HTMLElement {
         },
         { name: "unit", selector: { text: {} } },
         { name: "theme", selector: { theme: {} } },
-		{ name: "attr", selector: { attribute: { entity_id: "sensor.kws_306wf_energy"} } },
       ],
       computeLabel: (schema) => {
         if (schema.name === "icon") return "Special Icon";
@@ -365,7 +372,9 @@ class LGUtilityCounterCard extends HTMLElement {
 		  case "digits_number":
             return "The number of digits to the left of decimal point. (0 - 10, 0 = auto)";
 		  case "decimals_number":
-            return "The number of digits to the right of decimal point. (0 - 5, 0 = auto from entity's precision)";
+            return "The number of digits to the right of decimal point. (0 - 5, 0 = auto)";
+		  case "offset":
+            return "This value will be added to entity's value. If negative, it will be subtracted.";
         }
         return undefined;
       },
