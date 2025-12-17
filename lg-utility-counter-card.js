@@ -1,3 +1,14 @@
+function loadCSS(url) {
+  const link = document.createElement("link");
+  link.type = "text/css";
+  link.rel = "stylesheet";
+  link.href = url;
+  document.head.appendChild(link);
+}
+
+//loadCSS("https://fonts.googleapis.com/css?family=Gloria+Hallelujah");
+loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap");
+
 class LGUtilityCounterCard extends HTMLElement {
 
     // private properties
@@ -132,10 +143,6 @@ class LGUtilityCounterCard extends HTMLElement {
 				margin-left: 10px;
 				/*display: inline-block;*/
 				color: white;
-				font-family: Carlito, sans-serif;
-				font-weight: 400;
-				font-style: normal;
-				font-size: 26px;
 				border: 1px solid rgb(32,32,32);
 				text-align: center;
 				vertical-align: middle;
@@ -151,11 +158,15 @@ class LGUtilityCounterCard extends HTMLElement {
 				background-image: linear-gradient(rgba(64,64,64,1), rgb(255,255,255), rgba(64,64,64,1));
 				color: transparent;
 				background-clip: text;
+				width: 17px;
 				height: 24px;
 				display: block;
 				line-height: 24px;
 				text-align: center;
-				width: 17px;
+				font-family: Carlito, sans-serif;
+				font-weight: 400;
+				font-style: normal;
+				font-size: 26px;
 			}
 
 			.lg-utility-counter-red-bg {
@@ -177,7 +188,11 @@ class LGUtilityCounterCard extends HTMLElement {
 				width: 30px;
 				height: 39px;
 				background-color: #888;
-				line-height: 32px;
+				line-height: 39px;
+				padding: 0px 6px;
+				font-size: 18px;
+				font-weight: bold;
+				font-family: Carlito, sans-serif;
 				/*left: 194px;*/
 			}
        `
