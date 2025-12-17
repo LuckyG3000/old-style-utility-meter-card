@@ -280,6 +280,11 @@ class LGUtilityCounterCard extends HTMLElement {
 			if (total_digits_right == 0) {	//auto
 				const defaultPrecision = this.getState().attributes.precision;
 				console.log(defaultPrecision);
+
+				var attrs = this.getState().attributes;
+				for (var ix = 0; ix < attrs.length; ix++) {
+					console.log(ix + ": " + attrs[ix]);
+				}
 				//total_digits_right = String(parseInt(cntr_val)).length;
 				if (total_digits_right > 5) {total_digits_right = 5;}
 			}
