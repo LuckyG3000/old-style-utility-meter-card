@@ -206,7 +206,7 @@ class LGUtilityCounterCard extends HTMLElement {
 				<br><br>
 				<div class="lg-utility-counter-main-div">
 					<div class="lg-utility-counter-red-bg">
-					</div><div class="lg-utility-counter-grey-bg">kWh</div>`;
+					</div><div class="lg-utility-counter-grey-bg"></div>`;
 		for (var d = 0; d < 15; d++) {
 			html_content += `<span class="lg-utility-counter-digit-window">
 						<span class="lg-utility-counter-digit-text" id="lguc-digit-` + d + `">0</span>
@@ -294,9 +294,12 @@ class LGUtilityCounterCard extends HTMLElement {
 			for (var d = total_digits; d < 15; d++) {
 				this._elements.digit_window[d].style.display = "none";
 			}
-			this._elements.redbg.style.left = ((30 * this._config.digits_number) + 5) + "px"
-			this._elements.redbg.style.width = (30 * this._config.decimals_number) + "px"
-			this._elements.greybg.style.left = ((30 * this._config.digits_number) + 5 + (30 * this._config.decimals_number)) + "px"
+			this._elements.redbg.style.left = ((30 * this._config.digits_number) + 5) + "px";
+			this._elements.redbg.style.width = (30 * this._config.decimals_number) + "px";
+			this._elements.greybg.style.left = ((30 * this._config.digits_number) + 5 + (30 * this._config.decimals_number)) + "px";
+			const unitOfMeasurement = getState().attributes.unit_of_measurement;
+			this._elements.greybg.innerHTML = unitOfMeasurement;
+			
             this._elements.error.classList.add("lguc-error--hidden");
             //this._elements.dl.classList.remove("lguc-dl--hidden");
         }
@@ -334,7 +337,12 @@ class LGUtilityCounterCard extends HTMLElement {
       ],
       computeLabel: (schema) => {
         if (schema.name === "icon") return "Special Icon";
+		if (schema.name === "unit") {
+			const unitOfMeasurement = getState().attributes.unit_of_measurement;
+			return unitOfMeasurement;
         return undefined;
+		
+		  
       },
       computeHelper: (schema) => {
         switch (schema.name) {
