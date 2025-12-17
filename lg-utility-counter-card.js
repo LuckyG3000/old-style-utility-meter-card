@@ -130,7 +130,7 @@ class LGUtilityCounterCard extends HTMLElement {
 				height: 26px;
 				top: 6px;
 				margin-left: 10px;
-				display: inline-block;
+				/*display: inline-block;*/
 				color: white;
 				font-family: Carlito, sans-serif;
 				font-weight: 400;
@@ -162,7 +162,7 @@ class LGUtilityCounterCard extends HTMLElement {
 				display: inline-block;
 				position: absolute;
 				top: 0;
-				width: 46px;
+				width: 60px;
 				height: 39px;
 				background-color: #F02000;
 				line-height: 32px;
@@ -260,13 +260,14 @@ class LGUtilityCounterCard extends HTMLElement {
 			for (var d = 0; d < total_digits; d++) {
 				dig_val = cntr_str.substring(d, d + 1);
 				this._elements.digit[d].innerHTML = dig_val;
-				this._elements.digit[d].style.display = "block";
+				this._elements.digit[d].style.display = "inline-block";
 			}
 			//hide the rest of digits
 			for (var d = total_digits; d < 15; d++) {
 				this._elements.digit[d].style.display = "none";
 			}
-			this._elements.redbg.style.left = 28 * this._config.digits_number + "px"
+			this._elements.redbg.style.left = ((30 * this._config.digits_number) + 5) + "px"
+			this._elements.greybg.style.left = ((30 * this._config.digits_number) + 65) + "px"
             this._elements.error.classList.add("lguc-error--hidden");
             //this._elements.dl.classList.remove("lguc-dl--hidden");
         }
