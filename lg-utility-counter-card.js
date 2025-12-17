@@ -297,7 +297,7 @@ class LGUtilityCounterCard extends HTMLElement {
 			this._elements.redbg.style.left = ((30 * this._config.digits_number) + 5) + "px";
 			this._elements.redbg.style.width = (30 * this._config.decimals_number) + "px";
 			this._elements.greybg.style.left = ((30 * this._config.digits_number) + 5 + (30 * this._config.decimals_number)) + "px";
-			const unitOfMeasurement = getState().attributes.unit_of_measurement;
+			const unitOfMeasurement = this.getState().attributes.unit_of_measurement;
 			this._elements.greybg.innerHTML = unitOfMeasurement;
 			
             this._elements.error.classList.add("lguc-error--hidden");
@@ -338,7 +338,7 @@ class LGUtilityCounterCard extends HTMLElement {
       computeLabel: (schema) => {
         if (schema.name === "icon") return "Special Icon";
 		if (schema.name === "unit") {
-			const unitOfMeasurement = getState().attributes.unit_of_measurement;
+			const unitOfMeasurement = this.getState().attributes.unit_of_measurement;
 			return unitOfMeasurement;
 		}
         return undefined;
