@@ -380,7 +380,7 @@ class LGUtilityCounterCard extends HTMLElement {
         { name: "name", selector: { text: {} } },
 		{ name: "digits_number", selector: { number: { min: 0, max: 10, step: 1, mode: "slider" } } },
 		{ name: "decimals_number", selector: { number: { min: 0, max: 5, step: 1, mode: "slider" } } },
-		{ name: "decimal_separator", selector: { select: { mode: "list", options: {"Point", "Comma"} } } },
+		{ name: "decimal_separator", selector: { select: { mode: "list", options: ["Point", "Comma"] } } },
 		{ name: "offset", selector: { number: { step: "any", mode: "box" } } },
         {
             name: "icon",
