@@ -202,8 +202,10 @@ class LGUtilityCounterCard extends HTMLElement {
 
 			#lg-utility-counter-decimal-point {
 				position: absolute;
-				top: 20px;
-				font-size: 18px;
+				top: 1px;
+				display: inline-block;
+				line-height: 39px;
+				font-size: 36px;
 				font-weight: bold;
 				font-family: Carlito, sans-serif;
 			}
@@ -216,16 +218,17 @@ class LGUtilityCounterCard extends HTMLElement {
 			<div class="card-content">
 				<p class="lguc-error lguc-error--hidden">
 				<br><br>
+				<ha-icon id="lg-utility-counter-icon" icon="mdi:flash"></ha-icon>
 				<div class="lg-utility-counter-main-div">
 					<div class="lg-utility-counter-red-bg">
 					</div><div class="lg-utility-counter-grey-bg"></div>`;
 		for (var d = 0; d < 15; d++) {
 			html_content += `<span class="lg-utility-counter-digit-window">
 						<span class="lg-utility-counter-digit-text" id="lguc-digit-` + d + `">0</span>
-					</span>
-				<div id="lg-utility-counter-decimal-point"></div>`;
+					</span>`;
 		}
 		html_content += `
+					<div id="lg-utility-counter-decimal-point"></div>
 				</div>
 			</div>
         `;
@@ -250,6 +253,7 @@ class LGUtilityCounterCard extends HTMLElement {
 		this._elements.redbg = card.querySelector(".lg-utility-counter-red-bg");
 		this._elements.greybg = card.querySelector(".lg-utility-counter-grey-bg");
 		this._elements.dp = card.querySelector("#lg-utility-counter-decimal-point");
+		this._elements.icon = card.querySelector("#lg-utility-counter-icon");
 		
     }
 
@@ -355,6 +359,13 @@ class LGUtilityCounterCard extends HTMLElement {
 				this._elements.dp.innerHTML = ".";
 			} else {
 				this._elements.dp.innerHTML = ",";
+			}
+
+			if  (this._config.icon != undefined) {
+				this._elements.icon.setAttribute("icon", this._config.icon);
+				this._elements.icon.style.display = "inline-block";
+			} else {
+				this._elements.icon.style.display = "none";
 			}
 			
             this._elements.error.classList.add("lguc-error--hidden");
