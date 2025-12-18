@@ -221,7 +221,10 @@ class LGUtilityCounterCard extends HTMLElement {
 				font-weight: bold;
 				font-family: Carlito, sans-serif;
 			}
-       `
+
+			#lg-utility-counter-last-update {
+       `		display: nobe;
+			}
     }
 
     doCard() {
@@ -243,6 +246,7 @@ class LGUtilityCounterCard extends HTMLElement {
 		}
 		html_content += `
 					<div id="lg-utility-counter-decimal-point"></div>
+					<div id="lg-utility-counter-last-update"></div>
 				</div>
 			</div>
         `;
@@ -268,7 +272,7 @@ class LGUtilityCounterCard extends HTMLElement {
 		this._elements.greybg = card.querySelector(".lg-utility-counter-grey-bg");
 		this._elements.dp = card.querySelector("#lg-utility-counter-decimal-point");
 		this._elements.icon = card.querySelector("#lg-utility-counter-icon");
-		
+		this._elements.lu = card.querySelector("#lg-utility-counter-last-update");
     }
 
     doListen() {
@@ -343,12 +347,21 @@ class LGUtilityCounterCard extends HTMLElement {
 			
 			var cntr_str = l_str + r_str;
 			var dig_val;
-			
+
+			var ts = Math.floor(Date.now() / 1000);
+			var random_pos = false;
+			if (this._elements.lu < ts - 30) {
+				random_pos = true;
+				this._elements.lu = ts;
+			}
+				
 			for (var d = 0; d < total_digits; d++) {
 				dig_val = cntr_str.substring(d, d + 1);
 				this._elements.digit[d].innerHTML = dig_val;
 				this._elements.digit_window[d].style.display = "inline-block";
-				this._elements.digit_window[d].style.top = Math.round(Math.random() * 2 - 1) + "px";
+				if (random_pos) {
+					this._elements.digit_window[d].style.top = Math.round(Math.random() * 2 - 1) + "px";
+				}
 			}
 			//hide the rest of digits
 			for (var d = total_digits; d < 15; d++) {
