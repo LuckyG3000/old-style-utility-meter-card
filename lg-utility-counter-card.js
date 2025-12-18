@@ -337,7 +337,10 @@ class LGUtilityCounterCard extends HTMLElement {
 			var ts = Math.floor(Date.now() / 1000);
 			var random_pos = false;
 			if (this._elements.lu.innerHTML < ts - 60 || this._elements.lu.innerHTML == '') {
-				random_pos = true;
+				console.log(this._config.random_shift);
+				if (this._config.random_shift) {
+					random_pos = true;
+				}
 				this._elements.lu.innerHTML = ts;
 			}
 				
@@ -345,7 +348,7 @@ class LGUtilityCounterCard extends HTMLElement {
 				dig_val = cntr_str.substring(d, d + 1);
 				this._elements.digit[d].innerHTML = dig_val;
 				this._elements.digit_window[d].style.display = "inline-block";
-				if (random_pos && this._config.random_shift) {
+				if (random_pos) {
 					this._elements.digit_window[d].style.top = Math.round(Math.random() * 2 - 1) + "px";
 				} else {
 					this._elements.digit_window[d].style.top = 0;
@@ -386,8 +389,9 @@ class LGUtilityCounterCard extends HTMLElement {
 			}
 
 			if (this._config.plate_color != undefined) {
-				//this._elements.main_div.style.background-color = this._config.plate_color;
-				console.log(this._config.plate_color);
+				var plate_rgb = this._config.plate_color;	//array with 3 elements
+				this._elements.main_div.style.background-color = "rgb(" + plate_rgb[0] + "," + plate_rgb[1] + ","+ plate_rgb[2] + ")";
+				//console.log(this._config.plate_color);
 			}
 			
             this._elements.error.classList.add("lguc-error--hidden");
