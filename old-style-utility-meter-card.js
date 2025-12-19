@@ -376,6 +376,14 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.redbg.style.backgroundColor = this._config.decimal_plate_color;
 			}
 			
+			if (this._config.unit_plate_color != undefined && this._config.unit_plate_color != '' && this._config.colors == 'User defined') {
+				this._elements.greybg.style.backgroundColor = this._config.unit_plate_color;
+			}
+			
+			if (this._config.unit_color != undefined && this._config.unit_color != '' && this._config.colors == 'User defined') {
+				this._elements.greybg.style.color = this._config.unit_color;
+			}
+			
 			if (this._config.font_url == undefined) {
 				unloadCSS("osumc-webfont");
 			} else {
@@ -438,6 +446,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		{ name: "unit_color", selector: { text: {} } },
 		{ name: "digit_color", selector: { text: {} } },
 		{ name: "digit_bg_color", selector: { text: {} } },
+		{ name: "decimal_separator_color", selector: { text: {} } },
 		{ name: "icon_color", selector: { text: {} } },
 		{ name: "font_url", selector: { select: { mode: "dropdown", options: ["Default", "Carlito"] } } },
 		//{ name: "plate_color", disabled: true, selector: { color_rgb: {} } },
