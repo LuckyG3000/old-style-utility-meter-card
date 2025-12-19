@@ -1,9 +1,14 @@
-function loadCSS(url) {
+function loadCSS(url, id) {
   const link = document.createElement("link");
+  link.id = id;
   link.type = "text/css";
   link.rel = "stylesheet";
   link.href = url;
   document.head.appendChild(link);
+}
+
+function unloadCSS(id) {
+  document.head.remove(document.getElementById(id));
 }
 
 function isNumeric(n) {
@@ -24,13 +29,11 @@ class OldStyleUtilityMeterCard extends HTMLElement {
     // lifecycle
 	constructor() {
         super();
-        //console.log("LGUtilityCounterCard.constructor()")
         this.doStyle();
         this.doCard();
     }
     
     setConfig(config) {
-        //console.log("LGUtilityCounterCard.setConfig()")
         this._config = config;
         if (!this._isAttached) {
             this.doAttach();
@@ -43,27 +46,16 @@ class OldStyleUtilityMeterCard extends HTMLElement {
     }
 
     set hass(hass) {
-        //console.log("LGUtilityCounterCard.hass()")
         this._hass = hass;
         this.doUpdateHass()
     }
 
     connectedCallback() {
-        //console.log("LGUtilityCounterCard.connectedCallback()")
+
     }
 
     onClicked() {
-        //console.log("LGUtilityCounterCard.onClicked()");
-        this.doToggle();
-    }
-
-    // accessors
-    isOff() {
-        return this.getState().state == 'off';
-    }
-
-    isOn() {
-        return this.getState().state == 'on';
+        //this.doToggle();
     }
 
     getHeader() {
@@ -95,25 +87,25 @@ class OldStyleUtilityMeterCard extends HTMLElement {
         }
     }
 
-	 doEditor() {
+	 /*doEditor() {
         this._elements.editor = document.createElement("form");
         this._elements.editor.innerHTML = `
             <div class="row"><label class="label" for="header">Header:</label><input class="value" id="header"></input></div>
             <div class="row"><label class="label" for="entity">Entity:</label><input class="value" id="entity"></input></div>
         `;
-    }
+    }*/
 
     doStyle() {
         this._elements.style = document.createElement("style");
         this._elements.style.textContent = `
-            .lguc-error {
+            .osumc-error {
                 text-color: red;
             }
-            .lguc-error--hidden {
+            .osumc-error--hidden {
                 display: none;
             }
             
-			.lg-utility-counter-main-div {
+			.osumc-main-div {
 				display: inline-block;
 				vertical-align: middle;
 				background-color: rgb(16, 16, 16);
@@ -125,7 +117,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 
 			
-			.lg-utility-counter-icon-div {
+			.osumc-icon-div {
 				display: inline-block;
 				vertical-align: middle;
 				height: 39px;
@@ -134,7 +126,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 			
 			
-			.lg-utility-counter-digit-window {
+			.osumc-digit-window {
 				position: relative;
 				width: 18px;
 				height: 26px;
@@ -153,7 +145,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				filter: blur(0.25px);
 			}
 
-			.lg-utility-counter-digit-text {
+			.osumc-digit-text {
 				background-image: linear-gradient(rgba(64,64,64,1), rgb(255,255,255), rgba(64,64,64,1));
 				color: transparent;
 				background-clip: text;
@@ -168,7 +160,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				font-size: 26px;
 			}
 
-			.lg-utility-counter-red-bg {
+			.osumc-red-bg {
 				display: inline-block;
 				position: absolute;
 				top: 0;
@@ -180,7 +172,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 
 
-			.lg-utility-counter-grey-bg {
+			.osumc-grey-bg {
 				/*display: inline-block;*/
 				position: absolute;
 				top: 0;
@@ -195,7 +187,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				/*left: 194px;*/
 			}
 
-			#lg-utility-counter-decimal-point {
+			#osumc-decimal-point {
 				position: absolute;
 				top: 1px;
 				display: inline-block;
@@ -205,7 +197,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				font-family: Carlito, sans-serif;
 			}
 
-			#lg-utility-counter-last-update {
+			#osumc-last-update {
 				display: none;
 			}
        `;
@@ -215,22 +207,22 @@ class OldStyleUtilityMeterCard extends HTMLElement {
         this._elements.card = document.createElement("ha-card");
 		var html_content = `
 			<div class="card-content">
-				<p class="lguc-error lguc-error--hidden">
+				<p class="osumc-error osumc-error--hidden">
 				<br><br>
-				<div class="lg-utility-counter-icon-div">
-					<ha-icon icon="mdi:flash" id="lg-utility-counter-icon"></ha-icon>
+				<div class="osumc-icon-div">
+					<ha-icon icon="mdi:flash" id="osumc-icon"></ha-icon>
 				</div>
-				<div class="lg-utility-counter-main-div">
-					<div class="lg-utility-counter-red-bg">
-					</div><div class="lg-utility-counter-grey-bg"></div>`;
+				<div class="osumc-main-div">
+					<div class="osumc-red-bg">
+					</div><div class="osumc-grey-bg"></div>`;
 		for (var d = 0; d < 15; d++) {
-			html_content += `<span class="lg-utility-counter-digit-window">
-						<span class="lg-utility-counter-digit-text" id="lguc-digit-` + d + `">0</span>
+			html_content += `<span class="osumc-digit-window">
+						<span class="osumc-digit-text" id="osumc-digit-` + d + `">0</span>
 					</span>`;
 		}
 		html_content += `
-					<div id="lg-utility-counter-decimal-point"></div>
-					<div id="lg-utility-counter-last-update"></div>
+					<div id="osumc-decimal-point"></div>
+					<div id="osumc-last-update"></div>
 				</div>
 			</div>
         `;
@@ -244,20 +236,16 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 
     doQueryElements() {
         const card = this._elements.card;
-        this._elements.error = card.querySelector(".lguc-error")
-        //this._elements.dl = card.querySelector(".lguc-dl")
-        //this._elements.topic = card.querySelector(".lguc-dt")
-        //this._elements.toggle = card.querySelector(".tcvj-toggle")
-        //this._elements.value = card.querySelector(".tcvj-value")
+        this._elements.error = card.querySelector(".osumc-error")
 
-		this._elements.main_div = card.querySelector(".lg-utility-counter-main-div");
-		this._elements.digit_window = card.querySelectorAll(".lg-utility-counter-digit-window");
-		this._elements.digit = card.querySelectorAll(".lg-utility-counter-digit-text");
-		this._elements.redbg = card.querySelector(".lg-utility-counter-red-bg");
-		this._elements.greybg = card.querySelector(".lg-utility-counter-grey-bg");
-		this._elements.dp = card.querySelector("#lg-utility-counter-decimal-point");
-		this._elements.icon = card.querySelector("#lg-utility-counter-icon");
-		this._elements.lu = card.querySelector("#lg-utility-counter-last-update");
+		this._elements.main_div = card.querySelector(".osumc-main-div");
+		this._elements.digit_window = card.querySelectorAll(".osumc-digit-window");
+		this._elements.digit = card.querySelectorAll(".osumc-digit-text");
+		this._elements.redbg = card.querySelector(".osumc-red-bg");
+		this._elements.greybg = card.querySelector(".osumc-grey-bg");
+		this._elements.dp = card.querySelector("#osumc-decimal-point");
+		this._elements.icon = card.querySelector("#osumc-icon");
+		this._elements.lu = card.querySelector("#osumc-last-update");
     }
 
     doListen() {
@@ -275,19 +263,9 @@ class OldStyleUtilityMeterCard extends HTMLElement {
     doUpdateHass() {
         if (!this.getState()) {
             this._elements.error.textContent = `${this.getEntityID()} is unavailable.`;
-            this._elements.error.classList.remove("lguc-error--hidden");
-            //this._elements.dl.classList.add("lguc-dl--hidden");
+            this._elements.error.classList.remove("osumc-error--hidden");
         } else {
             this._elements.error.textContent = "";
-            //this._elements.topic.textContent = this.getName();
-            /*if (this.isOff()) {
-                this._elements.toggle.classList.remove("tcvj-toggle--on");
-                this._elements.toggle.classList.add("tcvj-toggle--off");
-            } else if (this.isOn()) {
-                this._elements.toggle.classList.remove("tcvj-toggle--off");
-                this._elements.toggle.classList.add("tcvj-toggle--on");
-            }*/
-            //this._elements.value.textContent = this.getState().state;
 
 			var cntr_val = parseFloat(this.getState().state);
 			if (isNumeric(this._config.offset)) {
@@ -385,24 +363,34 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.icon.style.display = "none";
 			}
 
-			if (this._config.plate_color != undefined) {
+			if (this._config.colors == 'Default') {
+				this._config.plate_color.disabled = true;
+			}
+				
+			/*if (this._config.plate_color != undefined) {
 				var plate_rgb = this._config.plate_color;	//array with 3 elements
 				var rgb_css = "rgb(" + plate_rgb[0] + "," + plate_rgb[1] + ","+ plate_rgb[2] + ")";
 				this._elements.main_div.style.backgroundColor = rgb_css;
+			}*/
+			
+			if (this._config.font_url == 'Carlito') {
+				loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap", "osumc-webfont");
+			} else if (this._config.font_url.slice(0,4) == 'http') {
+				loadCSS(this._config.font_url, "osumc-webfont");
+			} else {
+				unloadCSS("osumc-webfont");
 			}
 			
-			loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap");
-			
-            this._elements.error.classList.add("lguc-error--hidden");
-            //this._elements.dl.classList.remove("lguc-dl--hidden");
+            this._elements.error.classList.add("osumc-error--hidden");
         }
     }
 
-    doToggle() {
-        /*this._hass.callService('input_boolean', 'toggle', {
+    /*
+	doToggle() {
+        this._hass.callService('input_boolean', 'toggle', {
             entity_id: this.getEntityID()
-        });*/
-    }
+        });
+    }*/
 
     // configuration defaults
     /*static getStubConfig() {
@@ -430,8 +418,16 @@ class OldStyleUtilityMeterCard extends HTMLElement {
         },
         { name: "unit", selector: { text: {} } },
 		{ name: "colors", selector: { select: { mode: "list", options: ["Default", "User defined"] } } },
-		{ name: "plate_color", disabled: true, selector: { color_rgb: {} } },
-        { name: "theme", selector: { theme: {} } },
+		{ name: "plate_color", selector: { text: {} } },
+		{ name: "decimal_plate_color", selector: { text: {} } },
+		{ name: "unit_plate_color", selector: { text: {} } },
+		{ name: "unit_color", selector: { text: {} } },
+		{ name: "digit_color", selector: { text: {} } },
+		{ name: "digit_bg_color", selector: { text: {} } },
+		{ name: "icon_color", selector: { text: {} } },
+		{ name: "font_url", selector: { select: { mode: "dropdown", custom_value: true, options: ["Default", "Carlito"] } } },
+		//{ name: "plate_color", disabled: true, selector: { color_rgb: {} } },
+        //{ name: "theme", selector: { theme: {} } },
       ],
       computeLabel: (schema) => {
         if (schema.name === "icon") return "Special Icon";
