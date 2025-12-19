@@ -373,13 +373,18 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.main_div.style.backgroundColor = rgb_css;
 			}*/
 			
-			if (this._config.font_url == 'Carlito') {
-				loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap", "osumc-webfont");
-			} else if (this._config.font_url.slice(0,4) == 'http') {
-				loadCSS(this._config.font_url, "osumc-webfont");
-			} else {
+			if (this._config.font_url == undefined) {
 				unloadCSS("osumc-webfont");
+			} else {
+				if (this._config.font_url == 'Carlito') {
+					loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap", "osumc-webfont");
+				} else if (this._config.font_url.slice(0,4) == 'http') {
+					loadCSS(this._config.font_url, "osumc-webfont");
+				} else {
+					unloadCSS("osumc-webfont");
+				}
 			}
+
 			
             this._elements.error.classList.add("osumc-error--hidden");
         }
