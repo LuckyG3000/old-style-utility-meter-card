@@ -367,9 +367,6 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.icon.style.display = "none";
 			}
 
-			if (this._config.colors == 'Default') {
-				this._config.plate_color.disabled = true;
-			}
 				
 			/*if (this._config.plate_color != undefined) {
 				var plate_rgb = this._config.plate_color;	//array with 3 elements
@@ -407,7 +404,13 @@ class OldStyleUtilityMeterCard extends HTMLElement {
     }*/
 
 	static getConfigForm() {
-    return {
+	var col_disabled = false;
+	if (this._config.colors != undefined) {
+		if (this._config.colors == 'User defined') {
+			col_disabled = true;
+		}
+	}
+    var sch = {
       schema: [
         { name: "entity", required: true, selector: { entity: {} } },
         { name: "name", selector: { text: {} } },
@@ -427,7 +430,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
         },
         { name: "unit", selector: { text: {} } },
 		{ name: "colors", selector: { select: { mode: "list", options: ["Default", "User defined"] } } },
-		{ name: "plate_color", selector: { text: {} } },
+		{ name: "plate_color", disabled: col_disabled, selector: { text: {} } },
 		{ name: "decimal_plate_color", selector: { text: {} } },
 		{ name: "unit_plate_color", selector: { text: {} } },
 		{ name: "unit_color", selector: { text: {} } },
@@ -441,8 +444,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
       computeLabel: (schema) => {
         if (schema.name === "icon") return "Special Icon";
         return undefined;
-		
-		  
+				  
       },
       computeHelper: (schema) => {
         switch (schema.name) {
@@ -467,9 +469,22 @@ class OldStyleUtilityMeterCard extends HTMLElement {
         }
       },
     };
+	
+	return sch;
   }
 
 }
+
+/*
+function getSchIndex(sch, name) {
+	for (var i = 0; i < sch.schema.length; i++) {
+		if (sch.schema[i].name == name) {
+			//sch.schema[i].disabled = false;
+			return i;
+		}
+	}
+}
+*/
 
 customElements.define("old-style-utility-meter-card", OldStyleUtilityMeterCard);
 
