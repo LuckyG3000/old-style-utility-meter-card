@@ -363,12 +363,12 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			var digits_left = this._config.whole_digit_number;
 			var digits_right = this._config.decimal_digit_number;
 			
-			if (digits_left == -1) {	//auto
+			if (digits_left == 99) {	//auto
 				digits_left = l_str.length;
 				if (digits_left > 10) {digits_left = 10;}
 			}
 
-			if (digits_right == -1) {	//auto
+			if (digits_right == 99) {	//auto
 				digits_right = r_str.length;
 				if (digits_right > 5) {
 					digits_right = 5;
@@ -562,8 +562,8 @@ class OldStyleUtilityMeterCard extends HTMLElement {
       schema: [
         { name: "entity", required: true, selector: { entity: {} } },
         { name: "name", selector: { text: {} } },
-		{ name: "whole_digit_number", selector: { number: { min: -1, max: 10, step: 1, mode: "slider" } } },
-		{ name: "decimal_digit_number", selector: { number: { min: -1, max: 5, step: 1, mode: "slider" } } },
+		{ name: "whole_digit_number", selector: { number: { min: 0, max: 10, step: 1, mode: "slider" } } },
+		{ name: "decimal_digit_number", selector: { number: { min: 0, max: 5, step: 1, mode: "slider" } } },
 		{ name: "decimal_separator", selector: { select: { mode: "list", options: ["Point", "Comma", "None"] } } },
 		{ name: "markings", selector: { boolean: {} } },
 		{ name: "random_shift", selector: { boolean: {} } },
@@ -603,9 +603,9 @@ class OldStyleUtilityMeterCard extends HTMLElement {
           case "unit":
             return "The unit of measurement for this card. If not filled, unit is taken from selected entity. (0 = hide unit)";
 		  case "whole_digit_number":
-            return "The number of digits to the left of decimal point. (0 - 10, -1 = auto)";
+            return "The number of digits to the left of decimal point. (0 - 10, 99 = auto)";
 		  case "decimal_digit_number":
-            return "The number of digits to the right of decimal point. (0 - 5, -1 = auto)";
+            return "The number of digits to the right of decimal point. (0 - 5, 99 = auto)";
 		  case "offset":
             return "This value will be added to entity's value. If negative, it will be subtracted.";
 		  case "random_shift":
@@ -628,7 +628,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			config.decimal_digit_number = 0;
 		}
 			
-		if (config.whole_digit_number + config.decimal_digit_number == 0) {
+		if ((config.whole_digit_number + config.decimal_digit_number) == 0) {
           config.whole_digit_number = 0;
 		  //throw new Error("At least one digit must be shown");
         }
