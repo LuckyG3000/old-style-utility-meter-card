@@ -158,7 +158,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				display: block;
 				line-height: 24px;
 				text-align: center;
-				font-family: Carlito, sans-serif;
+				/*font-family: Carlito, sans-serif;*/
 				font-weight: 400;
 				font-style: normal;
 				font-size: 26px;
@@ -384,16 +384,34 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.greybg.style.color = this._config.unit_color;
 			}
 			
+			if (this._config.digit_color != undefined && this._config.digit_color != '' && this._config.colors == 'User defined') {
+				//this._elements.digit.style.color = this._config.digit_color;
+				this._elements.digit.style.backgroundImage = "linear-gradient(rgba(64,64,64,1), " + this._config.digit_color + ", rgba(64,64,64,1))";
+			}
+			
+			if (this._config.digit_bg_color != undefined && this._config.digit_bg_color != '' && this._config.colors == 'User defined') {
+				this._elements.digit_window.style.background = this._config.digit_bg_color;
+			}
+			
 			if (this._config.font_url == undefined) {
 				unloadCSS("osumc-webfont");
+				this._elements.digit.style.fontFamily = "inherit";
 			} else {
 				if (this._config.font_url == 'Carlito') {
 					loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap", "osumc-webfont");
+					this._elements.digit.style.fontFamily = "Carlito";
 				//} else if (this._config.font_url.slice(0,4) == 'http') {
 				//	loadCSS(this._config.font_url, "osumc-webfont");
 				} else {
 					unloadCSS("osumc-webfont");
+					this._elements.digit.style.fontFamily = "inherit";
 				}
+			}
+			
+			if (this._config.font_size == undefined) {
+				this._elements.digit.style.fontSize = "26px";
+			} else {
+				this._elements.digit.style.fontSize = this._config.font_size;
 			}
 
 			
@@ -449,6 +467,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		{ name: "decimal_separator_color", selector: { text: {} } },
 		{ name: "icon_color", selector: { text: {} } },
 		{ name: "font_url", selector: { select: { mode: "dropdown", options: ["Default", "Carlito"] } } },
+		{ name: "font_size", selector: { text: {} } },
 		//{ name: "plate_color", disabled: true, selector: { color_rgb: {} } },
         //{ name: "theme", selector: { theme: {} } },
       ],
