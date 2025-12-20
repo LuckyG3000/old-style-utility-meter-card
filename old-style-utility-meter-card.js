@@ -150,7 +150,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 
 			.osumc-digit-text {
-				background-image: linear-gradient(rgba(64,64,64,1), rgb(255,255,255), rgba(64,64,64,1));
+				background-image: linear-gradient(rgba(64,64,64,1), #aaa, rgba(64,64,64,1));
 				color: transparent;
 				background-clip: text;
 				width: 17px;
@@ -161,7 +161,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				/*font-family: Carlito, sans-serif;*/
 				font-weight: 400;
 				font-style: normal;
-				font-size: 26px;
+				font-size: 24px;
 			}
 
 			.osumc-red-bg {
@@ -200,6 +200,52 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				font-weight: bold;
 				font-family: Carlito, sans-serif;
 			}
+			
+			.osumc-line_cont {
+				position: absolute;
+				top: 0;
+				width: 100%;
+			}
+
+			.osumc-line_cont > .line {
+				position: relative;
+				display: block;
+				width: 5px;
+				height: 1px;
+				left: 12px;
+				border-top: 1px solid #FFF;
+				top: 0px;
+				margin-top: 1px;
+			}
+
+			.osumc-line_cont > :nth-child(5) {
+				width: 7px;
+				left: 10px;
+			}
+
+			.osumc-line_cont > :nth-child(0) {
+				opacity: 0.25;
+			}
+
+			.osumc-line_cont > :nth-child(1) {
+				opacity: 0.35;
+			}
+
+			.osumc-line_cont > :nth-child(2) {
+				opacity: 0.55;
+			}
+
+			.osumc-line_cont > :nth-child(3) {
+				opacity: 0.75;
+			}
+
+			.osumc-line_cont > :nth-child(4) {
+				opacity: 0.7;
+			}
+
+			.osumc-line_cont > :nth-child(5) {
+				opacity: 0.75;
+			}
 
 			#osumc-last-update {
 				display: none;
@@ -226,6 +272,17 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		}
 		html_content += `
 					<div id="osumc-decimal-point"></div>
+					<div class="line_cont">
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+						<div class="line"></div>
+					</div>
 					<div id="osumc-last-update"></div>
 				</div>
 			</div>
@@ -249,6 +306,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		this._elements.greybg = card.querySelector(".osumc-grey-bg");
 		this._elements.dp = card.querySelector("#osumc-decimal-point");
 		this._elements.icon = card.querySelector("#osumc-icon");
+		this._elements.markings = card.querySelector(".line_cont");
 		this._elements.lu = card.querySelector("#osumc-last-update");
     }
 
@@ -332,6 +390,12 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				if (!this._config.random_shift) {
 					this._elements.digit_window[d].style.top = 0;
 				}
+				//if markings are enabled, make the last window wider
+				if (this._config.markings && d == (total_digits - 1)) {
+					this._elements.digit_window[d].style.width = "24px";
+				} else {
+					this._elements.digit_window[d].style.width = "unset";
+				}
 			}
 			//hide the rest of digits
 			for (var d = total_digits; d < 15; d++) {
@@ -340,6 +404,10 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			this._elements.redbg.style.left = ((30 * digits_left) + 5) + "px";
 			this._elements.redbg.style.width = (30 * digits_right) + "px";
 			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right)) + "px";
+			
+			this._elements.markings.style.left = ((30 * digits_left) - 10) + "px";
+			
+			
 			
 			var unitOfMeasurement = this.getState().attributes.unit_of_measurement;
 			if (this._config.unit != undefined && String(this._config.unit).length > 0) {		//if unit is configured in Card's config, use it instead of entity's unit_of_measurement
@@ -434,6 +502,11 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.icon.style.color = this._config.icon_color;
 			}
 			
+			if (this._config.markings) {
+				this._elements.markings.style.display = "block";
+			} else {
+				this._elements.markings.style.display = "none";
+			}
 			
             this._elements.error.classList.add("osumc-error--hidden");
         }
@@ -465,6 +538,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		{ name: "digits_number", selector: { number: { min: 0, max: 10, step: 1, mode: "slider" } } },
 		{ name: "decimals_number", selector: { number: { min: 0, max: 5, step: 1, mode: "slider" } } },
 		{ name: "decimal_separator", selector: { select: { mode: "list", options: ["Point", "Comma"] } } },
+		{ name: "markings", selector: { select: { boolean: {} } } },
 		{ name: "random_shift", selector: { boolean: {} } },
 		{ name: "offset", selector: { number: { step: "any", mode: "box" } } },
         {
