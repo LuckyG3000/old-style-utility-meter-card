@@ -394,7 +394,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				if (this._config.markings && d == (total_digits - 1)) {
 					this._elements.digit_window[d].style.width = "24px";
 				} else {
-					this._elements.digit_window[d].removeProperty('width');
+					this._elements.digit_window[d].style.removeProperty('width');
 				}
 			}
 			//hide the rest of digits
