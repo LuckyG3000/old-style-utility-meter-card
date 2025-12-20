@@ -390,9 +390,12 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				if (!this._config.random_shift) {
 					this._elements.digit_window[d].style.top = 0;
 				}
+				
 				//if markings are enabled, make the last window wider
+				var markings_offset = 0;
 				if (this._config.markings && d == (total_digits - 1)) {
 					this._elements.digit_window[d].style.width = "24px";
+					markings_offset = 6;	//move other elements by this number of pixels to the right
 				} else {
 					this._elements.digit_window[d].style.removeProperty('width');
 				}
@@ -401,11 +404,11 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			for (var d = total_digits; d < 15; d++) {
 				this._elements.digit_window[d].style.display = "none";
 			}
-			this._elements.redbg.style.left = ((30 * digits_left) + 5) + "px";
-			this._elements.redbg.style.width = (30 * digits_right) + "px";
-			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right)) + "px";
+			this._elements.redbg.style.left = ((30 * digits_left) + 5 + markings_offset) + "px";
+			this._elements.redbg.style.width = (30 * digits_right + markings_offset) + "px";
+			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right) + markings_offset) + "px";
 			
-			this._elements.markings.style.left = ((30 * total_digits) - 10) + "px";
+			this._elements.markings.style.left = ((30 * total_digits) - 14) + "px";
 			
 			
 			
