@@ -207,7 +207,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				width: 100%;
 			}
 
-			.osumc-line_cont > .line {
+			.osumc-line_cont > .osumc-line {
 				position: relative;
 				display: block;
 				width: 5px;
@@ -272,16 +272,16 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		}
 		html_content += `
 					<div id="osumc-decimal-point"></div>
-					<div class="line_cont">
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
-						<div class="line"></div>
+					<div class="osumc-line_cont">
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
+						<div class="osumc-line"></div>
 					</div>
 					<div id="osumc-last-update"></div>
 				</div>
@@ -394,7 +394,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				if (this._config.markings && d == (total_digits - 1)) {
 					this._elements.digit_window[d].style.width = "24px";
 				} else {
-					this._elements.digit_window[d].style.width = "unset";
+					this._elements.digit_window[d].removeProperty('width');
 				}
 			}
 			//hide the rest of digits
