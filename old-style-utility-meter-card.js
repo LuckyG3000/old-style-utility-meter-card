@@ -395,7 +395,9 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			
 			if (this._config.font_url == undefined) {
 				unloadCSS("osumc-webfont");
-				this._elements.digit.style.fontFamily = "inherit";
+				for (var d = 0; d < total_digits; d++) {
+					this._elements.digit[d].style.fontFamily = "inherit";
+				}
 			} else {
 				if (this._config.font_url == 'Carlito') {
 					loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap", "osumc-webfont");
@@ -404,16 +406,19 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				//	loadCSS(this._config.font_url, "osumc-webfont");
 				} else {
 					unloadCSS("osumc-webfont");
-					this._elements.digit.style.fontFamily = "inherit";
+					for (var d = 0; d < total_digits; d++) {
+						this._elements.digit[d].style.fontFamily = "inherit";
+					}
 				}
 			}
 			
-			if (this._config.font_size == undefined) {
-				this._elements.digit.style.fontSize = "26px";
-			} else {
-				this._elements.digit.style.fontSize = this._config.font_size;
+			for (var d = 0; d < total_digits; d++) {
+				if (this._config.font_size == undefined) {
+					this._elements.digit[d].style.fontSize = "26px";
+				} else {
+					this._elements.digit[d].style.fontSize = this._config.font_size;
+				}
 			}
-
 			
             this._elements.error.classList.add("osumc-error--hidden");
         }
