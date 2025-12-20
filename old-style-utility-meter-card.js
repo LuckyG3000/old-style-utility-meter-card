@@ -203,7 +203,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			
 			.osumc-line_cont {
 				position: absolute;
-				top: 0;
+				top: 5px;
 				width: 100%;
 			}
 
@@ -405,7 +405,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			this._elements.redbg.style.width = (30 * digits_right) + "px";
 			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right)) + "px";
 			
-			this._elements.markings.style.left = ((30 * digits_left) - 10) + "px";
+			this._elements.markings.style.left = ((30 * total_digits) - 10) + "px";
 			
 			
 			
