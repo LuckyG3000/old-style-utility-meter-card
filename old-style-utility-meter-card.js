@@ -219,16 +219,16 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 
 			.osumc-line_cont > :nth-child(1) {
-				opacity: 0.05;
+				opacity: 0.15;
 				width: 4px;
 			}
 
 			.osumc-line_cont > :nth-child(2) {
-				opacity: 0.20;
+				opacity: 0.30;
 			}
 
 			.osumc-line_cont > :nth-child(3) {
-				opacity: 0.40;
+				opacity: 0.45;
 			}
 
 			.osumc-line_cont > :nth-child(4) {
@@ -246,15 +246,15 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 			
 			.osumc-line_cont > :nth-child(7) {
-				opacity: 0.4;
+				opacity: 0.45;
 			}
 			
 			.osumc-line_cont > :nth-child(8) {
-				opacity: 0.2;
+				opacity: 0.3;
 			}
 			
 			.osumc-line_cont > :nth-child(9) {
-				opacity: 0.05;
+				opacity: 0.15;
 				width: 4px;
 			}
 
@@ -415,7 +415,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			for (var d = total_digits; d < 15; d++) {
 				this._elements.digit_window[d].style.display = "none";
 			}
-			this._elements.redbg.style.left = ((30 * digits_left) + 5 + markings_offset) + "px";
+			this._elements.redbg.style.left = ((30 * digits_left) + 5) + "px";
 			this._elements.redbg.style.width = (30 * digits_right + markings_offset) + "px";
 			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right) + markings_offset) + "px";
 			
