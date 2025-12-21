@@ -549,6 +549,10 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.markings.style.display = "none";
 			}
 			
+			if (this._config.markings_color != undefined && this._config.markings_color != '' && this._config.colors == 'User defined') {
+				this._elements.markings.style.color = this._config.markings_color;
+			}
+			
             this._elements.error.classList.add("osumc-error--hidden");
         }
     }
@@ -600,6 +604,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		{ name: "digit_color", selector: { text: {} } },
 		{ name: "digit_bg_color", selector: { text: {} } },
 		{ name: "decimal_separator_color", selector: { text: {} } },
+		{ name: "markings_color", selector: { text: {} } },
 		{ name: "icon_color", selector: { text: {} } },
 		{ name: "font_url", selector: { select: { mode: "dropdown", options: ["Default", "Carlito"] } } },
 		{ name: "font_size", selector: { text: {} } },
@@ -638,7 +643,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		if (config.decimal_digit_number == 0) {
 			sch.schema[w].disabled = true;
 		} else {
-			sch.schema[w].disabled = true;
+			sch.schema[w].disabled = false;
 		}
 	
 		var w = getSchIndex(sch, 'plate_color');
