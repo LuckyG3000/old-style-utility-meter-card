@@ -520,19 +520,19 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				}
 			}
 			
-			if (this._config.font_url == undefined) {
+			if (this._config.font == undefined) {
 				unloadCSS("osumc-webfont");
 				for (var d = 0; d < total_digits; d++) {
 					this._elements.digit[d].style.fontFamily = "inherit";
 				}
 			} else {
-				if (this._config.font_url == 'Carlito') {
+				if (this._config.font == 'Carlito') {
 					loadCSS("https://fonts.googleapis.com/css2?family=Carlito:ital,wght@0,400&display=swap", "osumc-webfont");
 					for (var d = 0; d < total_digits; d++) {
 						this._elements.digit[d].style.fontFamily = "Carlito";
 					}
-				//} else if (this._config.font_url.slice(0,4) == 'http') {
-				//	loadCSS(this._config.font_url, "osumc-webfont");
+				//} else if (this._config.font.slice(0,4) == 'http') {
+				//	loadCSS(this._config.font, "osumc-webfont");
 				} else {
 					unloadCSS("osumc-webfont");
 					for (var d = 0; d < total_digits; d++) {
@@ -627,7 +627,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		{ name: "decimal_separator_color", selector: { text: {} } },
 		{ name: "markings_color", selector: { text: {} } },
 		{ name: "icon_color", selector: { text: {} } },
-		{ name: "font_url", selector: { select: { mode: "dropdown", options: ["Default", "Carlito"] } } },
+		{ name: "font", selector: { select: { mode: "dropdown", options: ["Default", "Carlito"] } } },
 		{ name: "font_size", selector: { text: {} } },
 		//{ name: "plate_color", disabled: true, selector: { color_rgb: {} } },
         //{ name: "theme", selector: { theme: {} } },
@@ -643,15 +643,21 @@ class OldStyleUtilityMeterCard extends HTMLElement {
           case "unit":
             return "The unit of measurement for this card. If not filled, unit is taken from selected entity. (0 = hide unit)";
 		  case "whole_digit_number":
-            return "The number of digits to the left of decimal point. (0 - 10, 99 = auto)";
+            return "Number of digits to the left of decimal point. (0 - 10, 99 = auto)";
 		  case "decimal_digit_number":
-            return "The number of digits to the right of decimal point. (0 - 5, 99 = auto)";
+            return "Number of digits to the right of decimal point. (0 - 5, 99 = auto)";
 		  case "offset":
             return "This value will be added to entity's value. If negative, it will be subtracted.";
 		  case "random_shift":
             return "Shift digits vertically randomly by ±1px, to get a more realistic look.";
 		  case "markings":
             return "Show minor markings on last digit.";
+		  case "colors":
+            return "You can set your desired colors for some elements of the card. Use color codes supported by CSS, e.g. #FFF, #C0C0C0, black, rgb(128, 128, 128), rgba(64, 0, 0, 0.25)...";
+		  case "font":
+            return "Applies only to digits";
+		  case "font_size":
+            return "Applies only to digits";
         }
         return undefined;
       },
