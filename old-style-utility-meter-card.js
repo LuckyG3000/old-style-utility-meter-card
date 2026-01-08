@@ -688,14 +688,14 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 			
 			if (this._config.show_wheel) {
-				this._elements.wheel-window.style.display = "block";
+				this._elements.wheel_window.style.display = "block";
 				if (this._config.speed_control_mode == 'Fixed') {
-					this._elements.wheel-marker.style.animation-duration = this._config.wheel_speed;
+					this._elements.wheel_marker.style.animation-duration = this._config.wheel_speed;
 				} else {
 					
 				}
 			} else {
-				this._elements.wheel-window.style.display = "none";
+				this._elements.wheel_window.style.display = "none";
 			}
 			
 			
