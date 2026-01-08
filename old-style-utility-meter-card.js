@@ -166,7 +166,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				height: 26px;
 				/*top: 6px;*/
 				margin-left: 10px;
-				/*display: inline-block;*/
+				display: inline-block;
 				color: white;
 				border: 1px solid rgb(32,32,32);
 				text-align: center;
@@ -196,7 +196,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 
 			.osumc-red-bg {
 				display: inline-block;
-				position: absolute;
+				position: relative;
 				top: 0;
 				/*width: 60px;*/
 				height: 39px;
@@ -207,8 +207,8 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 
 
 			.osumc-grey-bg {
-				/*display: inline-block;*/
-				position: absolute;
+				display: inline-block;
+				position: relative;
 				top: 0;
 				/*width: 30px;*/
 				height: 39px;
@@ -576,10 +576,10 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			for (var d = total_digits; d < 15; d++) {
 				this._elements.digit_window[d].style.display = "none";
 			}
-			this._elements.redbg.style.left = ((30 * digits_left) + 5) + "px";
+			//this._elements.redbg.style.left = ((30 * digits_left) + 5) + "px";
 			this._elements.redbg.style.width = (30 * digits_right + (markings_offset * (digits_right > 0))) + "px";
 
-			this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right) + markings_offset) + "px";
+			//this._elements.greybg.style.left = ((30 * digits_left) + 5 + (30 * digits_right) + markings_offset) + "px";
 			
 			this._elements.markings.style.left = ((30 * total_digits) - 14) + "px";
 			
