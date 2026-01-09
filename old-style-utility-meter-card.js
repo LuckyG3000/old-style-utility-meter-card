@@ -306,7 +306,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			.osumc-wheel-window {
 				width: 90%;
 				height: 21px;
-				background-color: #555;
+				/*background-color: #555;*/
 				margin: 20px auto;
 				text-align: center;
 				display: block;
@@ -327,7 +327,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			.osumc-wheel-window-right {
 				display: inline-block;
 				width: 5%;
-				background-color: #555;
+				/*background-color: #555;*/
 				height: 100%;
 				position: relative;
 				z-index: 1;
@@ -650,7 +650,10 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				this._elements.icon.style.display = "none";
 			}
 
-				
+			if (this._config.plate_color != undefined && this._config.plate_color != '' && this._config.colors == 'User defined') {
+				this._elements.card_content.style.backgroundColor = this._config.plate_color;
+			}
+			
 			if (this._config.integer_plate_color != undefined && this._config.integer_plate_color != '' && this._config.colors == 'User defined') {
 				this._elements.integer_div.style.backgroundColor = this._config.integer_plate_color;
 			}
