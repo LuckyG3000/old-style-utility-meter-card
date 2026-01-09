@@ -121,6 +121,10 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 	doStyle() {
 		this._elements.style = document.createElement("style");
 		this._elements.style.textContent = `
+			:root {
+				--marker-width: 30px;
+			}
+			
 			.card-content {
 				/*background-color: #888;*/
 			}
@@ -382,7 +386,6 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				animation-duration: 2s;
 				animation-iteration-count: infinite;
 				animation-timing-function: linear;
-				--marker-width: 30px;
 			}
 
 			@keyframes osumc-wheel-animation {
@@ -736,15 +739,27 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			}
 			
 			if (this._config.show_wheel) {
+				//show the main <div> element with wheel
 				this._elements.wheel_window.style.display = "block";
 				
+				//set custom wheel color
 				if (this._config.wheel_color != undefined && this._config.wheel_color != '' && this._config.colors == 'User defined') {
 					this._elements.wheel.style.backgroundImage = "linear-gradient(to right, #111 -5%, " + this._config.wheel_color + " 50%, #111 105%)";
 				}
 				
+				//set custom marker color
 				if (this._config.wheel_marker_color != undefined && this._config.wheel_marker_color != '' && this._config.colors == 'User defined') {
 					this._elements.wheel_marker.style.backgroundColor = this._config.wheel_marker_color;
 				}
+				
+				//set custom marker width
+				if (this._config.marker_width != undefined && this._config.marker_width != '') {
+					this._elements.wheel_marker.style.width = this._config.marker_width;
+					//also set the variable used for calculation in animation
+					var r = document.querySelector(':root');
+					r.style.setProperty('--marker-width', this._config.marker_width);
+				}
+
 				
 				if (this._config.speed_control_mode == 'Fixed') {
 					if (!isNaN(Number(this._config.wheel_speed))) {
