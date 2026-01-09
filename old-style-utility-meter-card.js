@@ -928,9 +928,9 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				sch.schema[w].hide = true;
 				w = getSchIndex(sch, 'power_entity');
 				sch.schema[w].disabled = true;
-				w = getSchIndex(sch, 'speed_range_low');
+				w = getSchIndex(sch, 'min_rot_time');
 				sch.schema[w].disabled = true;
-				w = getSchIndex(sch, 'speed_range_high');
+				w = getSchIndex(sch, 'max_rot_time');
 				sch.schema[w].disabled = true;
 			} else {
 				w = getSchIndex(sch, 'speed_control_mode');
@@ -942,10 +942,10 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 					w = getSchIndex(sch, 'power_entity');
 					sch.schema[w].required = false;
 					sch.schema[w].disabled = true;
-					w = getSchIndex(sch, 'speed_range_low');
+					w = getSchIndex(sch, 'min_rot_time');
 					sch.schema[w].required = false;
 					sch.schema[w].disabled = true;
-					w = getSchIndex(sch, 'speed_range_high');
+					w = getSchIndex(sch, 'max_rot_time');
 					sch.schema[w].required = false;
 					sch.schema[w].disabled = true;
 				} else {
@@ -967,6 +967,8 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			w = getSchIndex(sch, 'integer_plate_color');
 			if (config.colors == 'Default') {
 				sch.schema[w].disabled = true;
+				w = getSchIndex(sch, 'plate_color');
+				sch.schema[w].disabled = true;
 				w = getSchIndex(sch, 'decimal_plate_color');
 				sch.schema[w].disabled = true;
 				w = getSchIndex(sch, 'unit_plate_color');
@@ -984,6 +986,8 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				w = getSchIndex(sch, 'wheel_marker_color');
 				sch.schema[w].disabled = true;
 			} else {
+				sch.schema[w].disabled = false;
+				w = getSchIndex(sch, 'plate_color');
 				sch.schema[w].disabled = false;
 				w = getSchIndex(sch, 'decimal_plate_color');
 				sch.schema[w].disabled = false;
