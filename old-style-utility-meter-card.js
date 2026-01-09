@@ -840,7 +840,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			{ name: "speed_control_mode", selector: { select: { mode: "list", options: ["Fixed", "Power"] } } },
 			{ name: "wheel_speed", selector: { number: { min: 0.1, max: 20, step: 0.1, mode: "slider" } } },
 			{ name: "power_entity", selector: { entity: {} } },
-			{ name: "max_power_value", selector: { number: { step: any, mode: "box" } } },
+			{ name: "max_power_value", selector: { number: { step: "any", mode: "box" } } },
 			{ name: "min_rot_time", selector: { number: { min: 0.1, step: 0.1, mode: "box" } } },
 			{ name: "max_rot_time", selector: { number: { min: 0.1, step: 0.1, mode: "box" } } },
 			
