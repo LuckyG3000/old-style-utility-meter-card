@@ -16,7 +16,7 @@ Colors of almost all elements can be set to custom values.
 Font of digits can be either default (used by your HA dashboard) or Carlito, which is more resembling the font used on meter boxes.
 This card supports visual configuration editor.
 
-![Visual Configuration Editor](https://github.com/LuckyG3000/old-style-utility-meter-card/blob/main/imgs/visual_config.png?raw=true)
+![Visual Configuration Editor](imgs/visual_config.png?raw=true)
 
 ## Example YAML Configuration
 These are all options, that can be configured. Only the entity is mandatory, all others are optional.
