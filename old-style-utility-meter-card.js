@@ -641,23 +641,25 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				icon_w = 0;
 			}
 			
-			
-			//counter_div.width = icon_div.width + integer_div.width + redbg.width + markings_offset + greybg.width
-			var greybg_w = element.getBoundingClientRect().width;
-			
-			this._elements.counter_div.style.width = icon_w + (30 * digits_left) + (30 * digits_right + (markings_offset * (digits_right > 0))) + greybg_w + "px";
-			
 			var unitOfMeasurement = this.getState().attributes.unit_of_measurement;
 			if (this._config.unit != undefined && String(this._config.unit).length > 0) {		//if unit is configured in Card's config, use it instead of entity's unit_of_measurement
 				unitOfMeasurement = this._config.unit;
 			}
 			this._elements.greybg.innerHTML = unitOfMeasurement;
 
-			if  (this._config.unit == "0") {
+			if (this._config.unit == "0") {
 				this._elements.greybg.style.display = "none";
 			} else {
 				this._elements.greybg.style.display = "inline-block";
 			}
+			
+			
+			//counter_div.width = icon_div.width + integer_div.width + redbg.width + markings_offset + greybg.width
+			var greybg_w = this._elements.greybg.getBoundingClientRect().width;
+			
+			this._elements.counter_div.style.width = icon_w + (30 * digits_left) + (30 * digits_right + (markings_offset * (digits_right > 0))) + greybg_w + "px";
+			
+			
 
 			if (this._config.decimal_separator == "Point") {
 				this._elements.dp.innerHTML = ".";
