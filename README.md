@@ -82,7 +82,7 @@ In **```fixed```** mode you set only the speed:
 wheel_speed: 2
 ```
 
-The number can be set in range 0 - 20 with 0.1 steps, where 0 means the wheel rotation will be disabled, any other number is **time of single rotation in seconds**. That means the lower the number, the faster will the wheel spin.
+The number can be set in range 0 - 20 with 0.1 steps, where 0 means the wheel rotation will be disabled, any other number is **the time of a single rotation in seconds**. That means the lower the number, the faster will the wheel spin.
 
 In **```power```** mode you must set the **```power_entity```** and the values for transforming the value of sensor to rotation time.
 
