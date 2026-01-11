@@ -70,9 +70,11 @@ icon_background_color: black
 Most of these options are pretty straightforward a don't need any explanation. You can find some hints in the visual configuration editor for most of the options.\
 **Colors:** all color options (those ending with _color) must be entered in a CSS compatible syntax, e.g, ```"red", "#02DD7F", "#fff", "rgb(120, 120, 120)", "rgba(64, 64, 64, 0.75)"```...
 
-**Spinning wheel:** The rotating speed of the wheel can be either constant or dynamic based on value of optional entity (e.g. Power, Current, Flow etc.).\
+**Spinning wheel:** The rotating speed of the wheel can be either constant or dynamic based on value of optional entity (e.g. Power, Current, Flow etc.).
+
 Select the mode for speed config:\
-```speed_control_mode: fixed | power```\
+```YAMLspeed_control_mode: fixed | power```
+
 In ```fixed``` mode you set only the speed:\
 ```wheel_speed: 2```\
 The number can be set in range 0 - 20 with 0.1 steps, where 0 means the wheel rotation will be disabled, any other number is **time of single rotation in seconds**. That means the lower the number, the faster will the wheel spin.
