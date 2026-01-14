@@ -137,7 +137,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			throw new Error('Please define an entity!');
 		}
 		
-		if (!this._config.power_entity && this._config.speed_control_mode == "Power") {
+		if (!this._config.power_entity && (this._config.speed_control_mode == "Power" || this._config.speed_control_mode == "Realistic")) {
 			throw new Error('Please define the Power entity for wheel speed control mode!');
 		}
 	}
@@ -526,7 +526,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 		if (!this.getState() || this._config.entity == '' || this._config.entity == undefined || typeof this._config.entity !== "string") {
 			this._elements.error.textContent = `${this.getEntityID()} is unavailable.`;
 			this._elements.error.classList.remove("osumc-error--hidden");
-		} else if ((this._config.power_entity == '' || typeof this._config.power_entity !== "string") && this._config.speed_control_mode == 'Power') {
+		} else if ((this._config.power_entity == '' || typeof this._config.power_entity !== "string") && (this._config.speed_control_mode == 'Power' || this._config.speed_control_mode == 'Realistic')) {
 			this._elements.error.textContent = `Power entity is unavailable.`;
 			this._elements.error.classList.remove("osumc-error--hidden");
 		} else {
@@ -809,18 +809,31 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				} else {	//dynamic speed based on value of selected custom Power entity
 					if (this._config.power_entity && typeof this._config.power_entity === "string") {
 						var power_val = parseFloat(this._hass.states[this._config.power_entity].state);
-						//formula to calculate animation time (rotation speed) of the wheel
-						//from current state of Power entity and defined constants
-						// (max_rot_time + min_rot_time * power_val / max_power) - (max_rot_time * power_val / max_power)
-						var min_rot_time = this._config.min_rot_time;
-						var max_rot_time = this._config.max_rot_time;
-						var max_power = this._config.max_power_value;
-						if (power_val == 0 || !isNumeric(power_val) || !isNumeric(min_rot_time) || !isNumeric(max_rot_time) || !isNumeric(max_power)) {
-							this._elements.wheel_marker.style.animationDuration = 0 + "s";
+						
+						if (this._config.speed_control_mode == 'Power') {
+							//formula to calculate animation time (rotation speed) of the wheel
+							//from current state of Power entity and defined constants
+							// (max_rot_time + min_rot_time * power_val / max_power) - (max_rot_time * power_val / max_power)
+							var min_rot_time = this._config.min_rot_time;
+							var max_rot_time = this._config.max_rot_time;
+							var max_power = this._config.max_power_value;
+							if (power_val == 0 || !isNumeric(power_val) || !isNumeric(min_rot_time) || !isNumeric(max_rot_time) || !isNumeric(max_power)) {
+								this._elements.wheel_marker.style.animationDuration = 0 + "s";
+							} else {
+								if (power_val > max_power) {
+									power_val = max_power;
+								}
+								var calc_wheel_speed = (max_rot_time + min_rot_time * power_val / max_power) - (max_rot_time * power_val / max_power);
+								this._elements.wheel_marker.style.animationDuration = calc_wheel_speed + "s";
+							}
 						} else {
-							if (power_val > max_power) {power_val = max_power;}
-							var calc_wheel_speed = (max_rot_time + min_rot_time * power_val / max_power) - (max_rot_time * power_val / max_power);
-							this._elements.wheel_marker.style.animationDuration = calc_wheel_speed + "s";
+							if (power_val == 0 || !isNumeric(power_val)){
+								this._elements.wheel_marker.style.animationDuration = 0 + "s";
+							} else {
+								var rotationsPerKwh = this._config.rot_time_per_kwh;
+								var calc_wheel_speed = ((3600 / rotationsPerKwh) * 1000) / power_val;
+								this._elements.wheel_marker.style.animationDuration = calc_wheel_speed + "s";
+							}
 						}
 					} else {
 						this._elements.wheel_marker.style.removeProperty('animation-duration');
@@ -874,6 +887,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 			font: "Carlito",
 			font_size: 26,
 			scale: 100,
+			rot_time_per_kwh: 75,
 		}
     }
 
@@ -904,12 +918,13 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 
 			{ name: "show_wheel", selector: { boolean: {} } },
 			{ name: "marker_width", selector: { number: { min: 3, max: 100, step: 1, mode: "slider" } } },
-			{ name: "speed_control_mode", selector: { select: { mode: "list", options: ["Fixed", "Power"] } } },
+			{ name: "speed_control_mode", selector: { select: { mode: "list", options: ["Fixed", "Power", "Realistic"] } } },
 			{ name: "wheel_speed", selector: { number: { min: 0.1, max: 20, step: 0.1, mode: "slider" } } },
 			{ name: "power_entity", selector: { entity: {} } },
 			{ name: "max_power_value", selector: { number: { step: "any", mode: "box" } } },
 			{ name: "min_rot_time", selector: { number: { min: 0.1, step: 0.1, mode: "box" } } },
 			{ name: "max_rot_time", selector: { number: { min: 0.1, step: 0.1, mode: "box" } } },
+			{ name: "rot_time_per_kwh", selector: { number: { min: 1, step: 1, mode: "box" } } },
 			
 			{ name: "plate_color", selector: { text: {} } },
 			{ name: "name_color", selector: { text: {} } },
@@ -964,7 +979,7 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				case "show_wheel":
 					return "Shows a rotating wheel with marker, like on real electricity meter";
 				case "speed_control_mode":
-					return "Fixed - the wheel rotates with constant speed defined below. Power - the speed depends on sensor value of a defined entity, can be Power, Current, Flow...";
+					return "Fixed - the wheel rotates with constant speed defined below. Power - the speed depends on sensor value of a defined entity, can be Power, Current, Flow... Realistic - Emulates real utility meters";
 				case "wheel_speed":
 					return "Speed of the wheel. Number of seconds per single rotation (0 - 20, 0 = STOP, 0.1 - fastest, 20 - slowest)";
 				case "power_entity":
@@ -977,6 +992,8 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 					return "Maximum expected value of the above entity, at which the wheel will rotate at max speed. See Readme for deeper explanation.";
 				case "scale":
 					return "Set the scale of the counter (default = 100%). In case you have too many digits that you want to display and the counter doesn't fit into card. Or if you want to make the counter bigger.";
+				case "rot_time_per_kwh":
+					return "Set the amount of rotations the wheel should complete per used kwh";
 			}
 			return undefined;
 		},
@@ -1022,6 +1039,8 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 				sch.schema[w].disabled = true;
 				w = getSchIndex(sch, 'max_rot_time');
 				sch.schema[w].disabled = true;
+				w = getSchIndex(sch, 'rot_time_per_kwh');
+				sch.schema[w].disabled = true;
 			} else {
 				w = getSchIndex(sch, 'speed_control_mode');
 				sch.schema[w].disabled = false;
@@ -1043,6 +1062,28 @@ class OldStyleUtilityMeterCard extends HTMLElement {
 					w = getSchIndex(sch, 'max_rot_time');
 					sch.schema[w].required = false;
 					sch.schema[w].disabled = true;
+					w = getSchIndex(sch, 'rot_time_per_kwh');
+					sch.schema[w].required = false;
+					sch.schema[w].disabled = true;
+				} else if (config.speed_control_mode == 'Realistic'){
+					w = getSchIndex(sch, 'wheel_speed');
+					sch.schema[w].disabled = true;
+					sch.schema[w].required = false;
+					w = getSchIndex(sch, 'power_entity');
+					sch.schema[w].required = true;
+					sch.schema[w].disabled = false;
+					w = getSchIndex(sch, 'max_power_value');
+					sch.schema[w].required = false;
+					sch.schema[w].disabled = true;
+					w = getSchIndex(sch, 'min_rot_time');
+					sch.schema[w].required = false;
+					sch.schema[w].disabled = true;
+					w = getSchIndex(sch, 'max_rot_time');
+					sch.schema[w].required = false;
+					sch.schema[w].disabled = true;
+					w = getSchIndex(sch, 'rot_time_per_kwh');
+					sch.schema[w].required = true;
+					sch.schema[w].disabled = false;
 				} else {
 					w = getSchIndex(sch, 'wheel_speed');
 					sch.schema[w].required = false;
